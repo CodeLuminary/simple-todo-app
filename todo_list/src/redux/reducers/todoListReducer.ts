@@ -47,7 +47,7 @@ export const todoListSlice = createSlice({
     },
     setTaskAsCompleted: (state, action: PayloadAction<list>)=>{
       state.value = state.value.map(item => item.id === action.payload.id ? {
-        ...item, is_completed: true, completed_at: (new Date()).toDateString()
+        ...item, is_completed: true, completed_at: (new Date()).toString()
     } : item );
     }
   }

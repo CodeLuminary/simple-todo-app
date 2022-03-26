@@ -2,8 +2,9 @@ import {useRef,useState} from 'react';
 import './css/App.css';
 import {TypedUseSelectorHook, useSelector, useDispatch} from "react-redux";
 import type { RootState, AppDispatch } from './redux/store';
-import { addToList } from "./redux/reducers/todoListReducer";
-import {RiDeleteBin2Fill} from "react-icons/ri"
+import { addToList,removeFromList, setTaskAsCompleted } from "./redux/reducers/todoListReducer";
+import {RiDeleteBin2Fill} from "react-icons/ri";
+import {MdOutlineBookmarkAdded} from "react-icons/md"
 
 function App() {
   const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;
@@ -19,7 +20,11 @@ function App() {
       is_completed:false,
       task
     }));
-    alert(todoList.value.length)
+    alert("Task added successfully")
+  }
+
+  const DeleteTask = (): void =>{
+    
   }
 
   return (
@@ -63,9 +68,16 @@ function App() {
                           <td>
                             <span onClick={()=>
                               {
-                                
+                                dispatch(removeFromList(list));
+                                alert("Task deleted successfully");
                               }
                             }><RiDeleteBin2Fill className="icon" /></span>
+                            <span onClick={()=>{
+                              dispatch(setTaskAsCompleted(list));
+                              alert("Task set as completed successfully")
+                            }}>
+                              <MdOutlineBookmarkAdded className="icon" />
+                            </span>
                           </td>
                         </tr>
                       ))}

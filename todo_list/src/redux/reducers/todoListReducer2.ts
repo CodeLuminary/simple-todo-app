@@ -45,7 +45,7 @@ export const todoListSlice = createSlice({
           counter : {
             task: action.payload.task,
             is_completed: false,
-            created_at: (new Date()).toDateString()
+            created_at: (new Date()).toString()
           }
         }
       
