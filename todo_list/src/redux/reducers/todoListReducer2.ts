@@ -13,13 +13,19 @@ interface list{
   completed_at?: string
 };
 
+interface ToDoList{
+    id: list
+}
+
 interface ToDoState {
-  value: list[];
+  value: ToDoList | {},
+  number_of_list: number
 };
 
 // Define the initial state using that type
 const initialState: ToDoState = {
-  value: []
+  value: {},
+  number_of_list: 0
 }
 
 export const todoListSlice = createSlice({
@@ -32,23 +38,32 @@ export const todoListSlice = createSlice({
       state.value = action.payload
     },
     addToList: (state, action: PayloadAction<list>) =>{
-      state.value = [
-        ...state.value,
+        counter++;
+      state.value=
         {
-          id: ++counter,
-          task: action.payload.task,
-          is_completed: false,
-          created_at: (new Date()).toString()
+          ...state.value,
+          counter : {
+            task: action.payload.task,
+            is_completed: false,
+            created_at: (new Date()).toDateString()
+          }
         }
-      ]
+      
     },
     removeFromList: (state, action: PayloadAction<list>)=>{
-      state.value = state.value.filter( item => item.id !== action.payload.id)
+      //state.value = state.value.filter( item => item.id !== action.payload.id)
     },
-    setTaskAsCompleted: (state, action: PayloadAction<list>)=>{
-      state.value = state.value.map(item => item.id === action.payload.id ? {
-        ...item, is_completed: true, completed_at: (new Date()).toDateString()
-    } : item );
+    setTaskAsCompleted: (state, action: PayloadAction<list>)=>{  
+        let id = action.payload.id;
+      state.value = {
+        ...state.value,
+        id : {
+            task: action.payload.task,
+            is_completed: true,
+            completed_at: (new Date()).toDateString(),
+            created_at: action.payload.created_at
+        }//.is_completed = true
+      }
     }
   }
 })
