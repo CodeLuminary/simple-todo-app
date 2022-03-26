@@ -3,12 +3,14 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 // Define a type for the slice state
 
+let counter: number = 0;
+
 interface list{
-  id: number,
+  id?: number,
   task: string,
   is_completed: boolean,
   created_at: string,
-  completed_at: string
+  completed_at?: string
 };
 
 interface ToDoState {
@@ -28,6 +30,25 @@ export const todoListSlice = createSlice({
     // Use the PayloadAction type to declare the contents of `action.payload`
     setTodoList: (state, action: PayloadAction<list[]>) => {
       state.value = action.payload
+    },
+    addToList: (state, action: PayloadAction<list>) =>{
+      state.value = [
+        ...state.value,
+        {
+          id: ++counter,
+          task: action.payload.task,
+          is_completed: false,
+          created_at: (new Date()).toDateString()
+        }
+      ]
+    },
+    removeFromList: (state, action: PayloadAction<list>)=>{
+      state.value = state.value.filter( item => item.id !== action.payload.id)
+    },
+    setTaskAsCompleted: (state, action: PayloadAction<list>)=>{
+      state.value = state.value.map(item => item.id === action.payload.id ? {
+        ...item, is_completed: true, completed_at: (new Date()).toDateString()
+    } : item );
     }
   }
 })
